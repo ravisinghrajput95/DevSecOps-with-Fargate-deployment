@@ -20,15 +20,20 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-          
+  
+  
   Secrets_Check:
     name: Git_Secrets_Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: UnicornGlobal/trufflehog-actions-scan@master
-        with:
-          branch: ${{ github.head_ref }}
+     - name: Checkout
+       uses: actions/checkout@v2
+       with:
+         fetch-depth: 0
+     - name: trufflehog-actions-scan
+       uses: edplato/trufflehog-actions-scan@master
+       with:
+         scanArguments: "--regex --entropy=False --max_depth=5 --rules /regexes.json" # Add custom options here*
   
   SCA:
     runs-on: ubuntu-latest
