@@ -21,7 +21,7 @@ jobs:
           
       - name: git-secrets-check
         run: |-
-          docker run gesellix/trufflehog --json https://github.com/ravisinghrajput95/Simple-app-Fargate-deployment.git > trufflehog \
+          docker run gesellix/trufflehog --json https://github.com/ravisinghrajput95/Simple-app-Fargate-deployment.git > trufflehog 
           cat trufflehog
       
       - name: Cache SonarCloud packages
