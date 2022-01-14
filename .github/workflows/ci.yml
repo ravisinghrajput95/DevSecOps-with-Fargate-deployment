@@ -7,7 +7,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   Initialise:
-    name: Build
+    name: Prepare
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,14 +19,16 @@ jobs:
         with:
           java-version: 11
           
-  DependencyCheckTest:
+  SCA:
     runs-on: ubuntu-latest
-    name: depecheck_test
+    name: OWASP_dependency_check
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      
     - name: Build project with Maven
       run: mvn clean install
+      
     - name: Depcheck
       uses: dependency-check/Dependency-Check_Action@main
       id: Depcheck
@@ -37,42 +39,47 @@ jobs:
         args: >
             --failOnCVSS 7
             --enableRetired
+            
     - name: Upload Test results
       uses: actions/upload-artifact@master
       with:
            name: Depcheck report
            path: ${{github.workspace}}/reports
+  
+  SAST:
+    runs-on: ubuntu-latest
+    name: SonarCloud_Analysis
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
           
-    - name: Cache SonarCloud packages
-      uses: actions/cache@v1
-      with:
-        path: ~/.sonar/cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
           
-    - name: Cache Maven packages
-      uses: actions/cache@v1
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
-          
-    - name: Build and analyze
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ravisinghrajput95_Simple-app-Fargate-deployment
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ravisinghrajput95_Simple-app-Fargate-deployment
         
-    - name: SonarQube Quality Gate check
-      uses: sonarsource/sonarqube-quality-gate-action@master
-         # Force to fail step after specific time
-      with:
-        scanMetadataReportFile: target/sonar/report-task.txt
-      timeout-minutes: 5
-      env:
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
-        
-        
-        
-        
-        
+      - name: SonarQube Quality Gate check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        # Force to fail step after specific time
+        with:
+          scanMetadataReportFile: target/sonar/report-task.txt
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+
+      
