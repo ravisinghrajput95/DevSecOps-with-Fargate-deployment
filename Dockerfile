@@ -11,7 +11,7 @@ RUN mvn clean package
 FROM openjdk:8-jre-alpine3.9
  
 # copy only the artifacts we need from the first stage and discard the rest
-COPY --from=MAVEN_BUILD /Simple-app-Fargate-deployment/target/* /WebApp.war
+COPY --from=MAVEN_BUILD /target/* /WebApp.war
  
 # set the startup command to execute the war
 CMD ["java", "-war", "/WebApp.war"]
