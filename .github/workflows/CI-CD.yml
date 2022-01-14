@@ -150,7 +150,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition/${{steps.vars.outputs.stage}}.json
-        container-name: simple-app-${{steps.vars.outputs.stage}}
+        container-name: ${{ secrets.CONTAINER_NAME }}
         image: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_REPOSITORY }}-${{steps.vars.outputs.stage}}:${{ github.sha }}
         
     - name: Deploy Amazon ECS task definition
