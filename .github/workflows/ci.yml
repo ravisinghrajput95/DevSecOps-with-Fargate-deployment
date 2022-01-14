@@ -21,8 +21,7 @@ jobs:
           
       - name: git-secrets-check
         run: |-
-          rm trufflehog || true \
-          docker run gesellix/trufflehog --json https://github.com/ravisinghrajput95/DevSecOps-pipeline.git > trufflehog \
+          docker run gesellix/trufflehog --json https://github.com/ravisinghrajput95/Simple-app-Fargate-deployment.git > trufflehog \
           cat trufflehog
       
       - name: Cache SonarCloud packages
@@ -44,9 +43,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ravisinghrajput95_Simple-app-Fargate-deployment
+        
       - name: SonarQube Quality Gate check
         uses: sonarsource/sonarqube-quality-gate-action@master
          # Force to fail step after specific time
+        with:
+          scanMetadataReportFile: target/sonar/report-task.txt
         timeout-minutes: 5
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
