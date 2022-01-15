@@ -1,24 +1,29 @@
 {
-    "family": "simple-app", 
-    "networkMode": "awsvpc", 
-    "containerDefinitions": [
-        {
-            "name": "simple-app", 
-            "image": "074460413322.dkr.ecr.us-east-1.amazonaws.com/simple-app:809fbde6d1084f0871a6e7e866c841dd94cba55c", 
-            "portMappings": [
-                {
-                    "containerPort": 80, 
-                    "hostPort": 80, 
-                    "protocol": "tcp"
-                }
-            ], 
-            "essential": true 
-        }
-    ], 
-    "requiresCompatibilities": [
-        "FARGATE"
-    ], 
-    "cpu": "256", 
-    "memory": "512"
+	"containerDefinitions": [{
+		"essential": true,
+		"image": "074460413322.dkr.ecr.us-east-1.amazonaws.com/simple-app:809fbde6d1084f0871a6e7e866c841dd94cba55c",
+		"logConfiguration": {
+			"logDriver": "awslogs",
+			"options": {
+				"awslogs-group": "/ecs/task-definition",
+				"awslogs-region": "us-east-1",
+				"awslogs-stream-prefix": "ecs"
+			}
+		},
+		"name": "simple-app",
+		"portMappings": [{
+			"containerPort": 8080,
+			"hostPort": 8080,
+			"protocol": "tcp"
+		}]
+	}],
+	"cpu": "256",
+	"executionRoleArn": "arn:aws:iam::074460413322:role/ecsTaskExecutionRole",
+	"family": "simple-app",
+	"memory": "512",
+	"networkMode": "awsvpc",
+	"platformFamily": "LINUX",
+	"requiresCompatibilities": [
+		"FARGATE"
+	]
 }
-       
