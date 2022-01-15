@@ -22,7 +22,10 @@
 	"family": "simple-app",
 	"memory": "512",
 	"networkMode": "awsvpc",
-	"platformFamily": "LINUX",
+	"runtimePlatform": {
+		"cpuArchitecture": "X86_64",
+		"operatingSystemFamily": "LINUX"
+	},
 	"requiresCompatibilities": [
 		"FARGATE"
 	]
