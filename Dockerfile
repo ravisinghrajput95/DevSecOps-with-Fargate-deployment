@@ -16,6 +16,3 @@ COPY --from=MAVEN_BUILD target/*.war /usr/local/tomcat/webapps
 # Expose the port to access the app
 EXPOSE 8080
 
-# Entrypoint to start the process in the container
-ENTRYPOINT ["sh", "/usr/local/tomcat/bin/startup.sh"]
- 
