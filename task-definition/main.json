@@ -1,7 +1,7 @@
 {
 	"containerDefinitions": [{
 		"essential": true,
-		"image": "074460413322.dkr.ecr.us-east-1.amazonaws.com/simple-app:809fbde6d1084f0871a6e7e866c841dd94cba55c",
+		"image": "111111111111.dkr.ecr.us-east-1.amazonaws.com/simple-app:809fbde6d1084f0871a6e7e866c841dd94cba55c",
 		"logConfiguration": {
 			"logDriver": "awslogs",
 			"options": {
@@ -18,7 +18,7 @@
 		}]
 	}],
 	"cpu": "256",
-	"executionRoleArn": "arn:aws:iam::074460413322:role/ecsTaskExecutionRole",
+	"executionRoleArn": "arn:aws:iam::111111111111:role/ecsTaskExecutionRole",
 	"family": "simple-app",
 	"memory": "512",
 	"networkMode": "awsvpc",
