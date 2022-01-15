@@ -85,7 +85,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ravisinghrajput95_Simple-app-Fargate-deployment
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ravisinghrajput95_DevSecOps-with-Fargate-deployment
         
       - name: SonarQube Quality Gate check
         uses: sonarsource/sonarqube-quality-gate-action@master
