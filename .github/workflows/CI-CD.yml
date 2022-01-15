@@ -186,7 +186,7 @@ jobs:
       - name: Run script file
         run: |
              chmod +x verify_deployment.sh
-             .verify_deployment.sh
+             ./verify_deployment.sh
         shell: bash
     
     
