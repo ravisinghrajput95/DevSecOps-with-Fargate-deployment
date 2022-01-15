@@ -176,3 +176,23 @@ jobs:
        with:
          target: 'http://simple-app-1864812808.us-east-1.elb.amazonaws.com/WebApp/#'
     
+ 
+  Verify_Deployment:
+    name: Post Deployment Activity
+    runs-on: ubuntu-latest
+    needs: Deploy
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run script file
+        run: |
+             chmod +x verify_deployment.sh
+             .verify_deployment.sh
+        shell: bash
+    
+    
+    
+    
+    
+    
+    
+    
